@@ -1,0 +1,28 @@
+service: serverless-template
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: eu-west-2
+functions:
+  crawl:
+    handler: handler.crawl
+    events:
+      - schedule: rate(2 hours)
+  index:
+    handler: handler.index
+    events:
+      - http:
+          path: /
+          method: get
+          cors: true
+plugins:
+  - serverless-plugin-optimize
+  - serverless-offline
+package:
+  individually: true
+custom:
+  serverless-offline:
+    babelOptions:
+      presets: ["es2015", "es2016", "stage-0"]
+  optimize:
+    presets: ['es2015', 'es2016', 'stage-0']
